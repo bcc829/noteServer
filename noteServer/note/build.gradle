@@ -11,6 +11,7 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+		testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 	}
 }
 
@@ -52,5 +53,6 @@ dependencies {
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('io.projectreactor:reactor-test')
-	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.3.RELEASE'
+	runtimeOnly('org.postgresql:postgresql')
+	compile("org.springframework.boot:spring-boot-starter-tomcat")
 }
