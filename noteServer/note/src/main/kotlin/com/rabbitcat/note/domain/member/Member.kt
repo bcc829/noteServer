@@ -1,23 +1,22 @@
 package com.rabbitcat.note.domain.member
 
+import org.hibernate.annotations.DynamicInsert
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "member", schema = "public")
+@DynamicInsert
 data class Member(
         @Id
-        @GeneratedValue
-        val seqId : Integer,
+        @GeneratedValue(strategy=GenerationType.IDENTITY)
+        val seqId : Integer?,
         val id: String,
         val password: String,
-        val phoneNumber: Integer,
+        val phoneNumber: String,
         val address: String,
         val nickname: String,
         val email: String,
-        val regDate: Date) {
+        val regDate: Date?) {
 
 }

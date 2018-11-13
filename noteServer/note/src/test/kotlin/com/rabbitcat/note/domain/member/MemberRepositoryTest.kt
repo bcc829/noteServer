@@ -17,23 +17,43 @@ class MemberRepositoryTest {
    lateinit var memberRepository : MemberRepository
 
     @After
-    public fun cleanUp(){
+    fun cleanUp(){
 
     }
 
     @Test
-    public fun select_member_data_by_seq_id(){
-       var member = memberRepository.findBySeqIdEquals(2)
+    fun select_member_data_by_seq_id(){
+       var member = memberRepository.findBySeqIdEquals(3)
        println(member.toString())
 
         assertEquals("jeong", member.id)
     }
 
-    @Test fun select_member_data_by_user_id(){
+    @Test
+    fun select_member_data_by_user_id(){
         var member = memberRepository.findByIdEquals(id = "jeong")
         println(member.toString());
 
         assertEquals("jeong@email.com", member.email)
     }
 
+    @Test
+    fun insert_member_data(){
+
+        val id : String = "jeong1"
+        val password : String = "3456"
+        val address : String = "인천시"
+        val phoneNumber : String = "01000001111"
+        val email : String = "test@email.com"
+        val nickName : String = "정1"
+
+        var member = Member(id = id, password = password, address = address, phoneNumber = phoneNumber, email = email, nickname = nickName, seqId = null, regDate = null)
+
+        memberRepository.save(member)
+
+        var searchMember = memberRepository.findByIdEquals(id)
+
+        assertEquals("jeong1", searchMember.id)
+
+    }
 }
