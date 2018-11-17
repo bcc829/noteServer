@@ -11,7 +11,7 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
-		testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+		testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 	}
 }
 
@@ -44,7 +44,6 @@ repositories {
 
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
 	implementation('com.fasterxml.jackson.module:jackson-module-kotlin')

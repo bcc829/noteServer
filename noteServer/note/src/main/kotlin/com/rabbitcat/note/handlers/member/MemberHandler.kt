@@ -1,4 +1,4 @@
-package com.rabbitcat.note.handlers.memberHandler
+package com.rabbitcat.note.handlers.member
 
 
 import com.rabbitcat.note.domain.member.Member
@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+
+
 
 @Component
 class MemberHandler {
@@ -45,30 +47,30 @@ class MemberHandler {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(memberFlux, Member::class.java)
     }
 
-    fun insertMember(request: ServerRequest): Mono<ServerResponse> {
+//    fun insertMember(request: ServerRequest): Mono<ServerResponse> {
+//        logger.info(">>>>>>>>>>>> getMemberInfoAll start!!!!!")
+//
+//        val id :String = request.pathVariable("id")
+//
+//        val memberMono: Mono<Member> = request.bodyToMono<Member>()
+//
+//        val existMember: Mono<Member> = memberRepository.findByIdEquals(id).toMono()
+//
+//        return existMember.map { member ->  ServerResponse.badRequest().contentType(MediaType.APPLICATION_JSON).body(Mono.just("Id is duplicated"), String::class.java)}
+//
+//
+//        return existMember.map { member -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just(memberRepository.save(member)), Member::class.java).block() }
+//
+//        return memberMono.map { member -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just(memberRepository.save(member)), Member::class.java) }
+//
+//        try {
+//            memberRepository.findByIdEquals(id)
+//        } catch (e : Exception){
+//            return  ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just(memberRepository.save(member)), Member::class.java)
+//        }
+//
+//        return ServerResponse.badRequest().contentType(MediaType.APPLICATION_JSON).body(Mono.just(member), Member::class.java)
+//
+//    }
 
-        logger.info(">>>>>>>>>>>> getInsertMember start!!!!!")
-
-        val bodyToMono: Mono<Member> = request.bodyToMono(Member::class.java)
-
-        val member: Member? = bodyToMono.block()
-
-        if(member == null) {
-            return ServerResponse.badRequest().contentType(MediaType.APPLICATION_JSON).body(Mono.just("Member data is required"), String::class.java)
-        }else{
-            try{
-
-                if(memberRepository.findByIdEquals(member.id) != null){
-                    logger.info(">>>>>>>>>>>> memberId duplication!!!!!")
-                    return ServerResponse.badRequest().contentType(MediaType.APPLICATION_JSON).body(Mono.just("Member id duplication"), String::class.java)
-                }
-                memberRepository.save(member)
-
-            } catch (e : Exception){
-                return ServerResponse.badRequest().contentType(MediaType.APPLICATION_JSON).body(Mono.just("Error in DB"), String::class.java)
-            }
-            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just("Member data insert OK"), String::class.java)
-        }
-
-    }
 }

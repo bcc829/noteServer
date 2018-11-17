@@ -40,7 +40,7 @@ class MemberRepositoryTest {
     @Test
     fun insert_member_data(){
 
-        val id : String = "jeong1"
+        val id : String = "jeong3"
         val password : String = "3456"
         val address : String = "인천시"
         val phoneNumber : String = "01000001111"
@@ -53,7 +53,7 @@ class MemberRepositoryTest {
 
         var searchMember = memberRepository.findByIdEquals(id)
 
-        assertEquals("jeong1", searchMember.id)
+        assertEquals("jeong3", searchMember.id)
 
     }
 }

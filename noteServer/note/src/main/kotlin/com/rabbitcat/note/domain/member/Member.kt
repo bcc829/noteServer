@@ -1,6 +1,7 @@
 package com.rabbitcat.note.domain.member
 
 import org.hibernate.annotations.DynamicInsert
+import reactor.core.publisher.Mono
 import java.util.*
 import javax.persistence.*
 
@@ -10,13 +11,13 @@ import javax.persistence.*
 data class Member(
         @Id
         @GeneratedValue(strategy=GenerationType.IDENTITY)
-        val seqId : Integer?,
+        val seqId : Integer? = null,
         val id: String,
         val password: String,
         val phoneNumber: String,
         val address: String,
         val nickname: String,
         val email: String,
-        val regDate: Date?) {
+        val regDate: Date? = Date()) {
 
 }
