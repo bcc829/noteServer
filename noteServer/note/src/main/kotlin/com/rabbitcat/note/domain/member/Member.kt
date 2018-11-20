@@ -13,11 +13,11 @@ data class Member(
         @GeneratedValue(strategy=GenerationType.IDENTITY)
         val seqId : Integer? = null,
         val id: String,
-        val password: String,
-        val phoneNumber: String,
-        val address: String,
-        val nickname: String,
-        val email: String,
+        var password: String,
+        var phoneNumber: String,
+        var address: String,
+        var nickname: String,
+        var email: String,
         val regDate: Date? = Date()) {
 
 }
