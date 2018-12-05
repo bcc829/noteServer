@@ -11,7 +11,6 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
-		testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 	}
 }
 
@@ -21,6 +20,8 @@ apply plugin: 'kotlin-jpa'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'idea'
 
 group = 'com.rabbitcat'
 version = '0.0.1-SNAPSHOT'
@@ -54,4 +55,21 @@ dependencies {
 	testImplementation('io.projectreactor:reactor-test')
 	runtimeOnly('org.postgresql:postgresql')
 	compile("org.springframework.boot:spring-boot-starter-tomcat")
+	compile "com.mysema.querydsl:querydsl-jpa:3.6.3"
+	kapt "com.mysema.querydsl:querydsl-apt:3.6.3:jpa"
+	compile group: 'javax.inject', name: 'javax.inject', version: '1'
+}
+
+kapt {
+	// stubs are not needed in kapt3
+	// generateStubs = true
+	mapDiagnosticLocations = true // 1.2.30 include the Kotlin files into error reports
+}
+
+idea {
+    module {
+        def kaptMain = file('build/generated/source/kapt/main')
+        sourceDirs += kaptMain
+        generatedSourceDirs += kaptMain
+    }
 }
