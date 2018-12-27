@@ -1,5 +1,6 @@
 package com.rabbitcat.note.domain.member
 
+import com.rabbitcat.note.repository.member.MemberRepository
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Test

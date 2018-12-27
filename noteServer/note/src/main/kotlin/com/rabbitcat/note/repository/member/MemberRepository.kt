@@ -1,5 +1,6 @@
-package com.rabbitcat.note.domain.member
+package com.rabbitcat.note.repository.member
 
+import com.rabbitcat.note.domain.member.Member
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MemberRepository : JpaRepository<Member, Number> {

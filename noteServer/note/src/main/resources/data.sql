@@ -47,3 +47,26 @@ ALTER TABLE public."member" ALTER COLUMN seq_id SET DEFAULT nextval('member_seq_
 ALTER TABLE public."member" ADD reg_date date NULL DEFAULT now() ;
 ALTER TABLE member ADD constraint unique_id unique (id)
 
+-- DROP SEQUENCE public.post_seq_id_seq;
+
+CREATE SEQUENCE public.post_seq_id_seq
+NO MINVALUE
+NO MAXVALUE;
+
+
+
+CREATE TABLE public.post (
+	title text NULL,
+	content text NULL,
+	reg_id varchar NULL,
+	reg_date timestamp NULL DEFAULT now(),
+	upd_date timestamp NULL,
+	del_date timestamp NULL,
+	del_yn varchar NULL,
+	seq_id serial NOT NULL,
+	CONSTRAINT post_pk PRIMARY KEY (seq_id),
+	CONSTRAINT post_member_fk FOREIGN KEY (reg_id) REFERENCES member(id) ON UPDATE SET NULL ON DELETE SET NULL
+)
+WITH (
+	OIDS=FALSE
+) ;

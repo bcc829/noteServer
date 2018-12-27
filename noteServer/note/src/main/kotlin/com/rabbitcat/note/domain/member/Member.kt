@@ -1,11 +1,12 @@
 package com.rabbitcat.note.domain.member
 
+import com.mysema.query.annotations.QueryEntity
 import org.hibernate.annotations.DynamicInsert
-import reactor.core.publisher.Mono
 import java.util.*
 import javax.persistence.*
 
 @Entity
+@QueryEntity
 @Table(name = "member", schema = "public")
 @DynamicInsert
 data class Member(

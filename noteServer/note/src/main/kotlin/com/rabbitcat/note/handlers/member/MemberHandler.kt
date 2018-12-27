@@ -2,7 +2,7 @@ package com.rabbitcat.note.handlers.member
 
 
 import com.rabbitcat.note.domain.member.Member
-import com.rabbitcat.note.domain.member.MemberRepository
+import com.rabbitcat.note.repository.member.MemberRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
