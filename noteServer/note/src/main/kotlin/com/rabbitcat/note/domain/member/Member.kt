@@ -1,6 +1,6 @@
 package com.rabbitcat.note.domain.member
 
-import com.mysema.query.annotations.QueryEntity
+import com.querydsl.core.annotations.QueryEntity
 import org.hibernate.annotations.DynamicInsert
 import java.util.*
 import javax.persistence.*
@@ -12,7 +12,7 @@ import javax.persistence.*
 data class Member(
         @Id
         @GeneratedValue(strategy=GenerationType.IDENTITY)
-        val seqId : Integer? = null,
+        val seqId : Int? = null,
         val id: String,
         var password: String,
         var phoneNumber: String,
