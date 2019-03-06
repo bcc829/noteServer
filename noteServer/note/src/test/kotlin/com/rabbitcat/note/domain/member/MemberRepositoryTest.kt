@@ -27,7 +27,7 @@ class MemberRepositoryTest {
        var member = memberRepository.findBySeqIdEquals(3)
        println(member.toString())
 
-        assertEquals("jeong", member.id)
+        assertEquals("jeong", member?.id)
     }
 
     @Test
@@ -41,14 +41,14 @@ class MemberRepositoryTest {
     @Test
     fun insert_member_data(){
 
-        val id : String = "jeong3"
-        val password : String = "3456"
-        val address : String = "인천시"
-        val phoneNumber : String = "01000001111"
-        val email : String = "test@email.com"
-        val nickName : String = "정1"
+        val id  = "jeong345"
+        val password = "3456"
+        val address = "인천시"
+        val phoneNumber = "01000001111"
+        val email = "test@email.com"
+        val nickName = "정1"
 
-        var member = Member(id = id, password = password, address = address, phoneNumber = phoneNumber, email = email, nickname = nickName, seqId = null, regDate = null)
+        var member = Member(id = id, password = password, address = address, phoneNumber = phoneNumber, email = email, nickname = nickName, regDate = null)
 
         memberRepository.save(member)
 

@@ -10,15 +10,12 @@ import javax.persistence.*
 @Table(name = "member", schema = "public")
 @DynamicInsert
 data class Member(
+        val seqId : Integer? = null,
         @Id
-        @GeneratedValue(strategy=GenerationType.IDENTITY)
-        val seqId : Int? = null,
         val id: String,
         var password: String,
         var phoneNumber: String,
         var address: String,
         var nickname: String,
         var email: String,
-        val regDate: Date? = Date()) {
-
-}
+        val regDate: Date? = null)

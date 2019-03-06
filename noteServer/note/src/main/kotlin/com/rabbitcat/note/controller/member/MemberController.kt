@@ -47,7 +47,7 @@ class MemberController {
 
         try{
 
-            var existMember: Member;
+            var existMember: Member
 
             try{
                 existMember = memberRepository.findByIdEquals(id)

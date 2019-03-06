@@ -12,8 +12,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.body
 import reactor.core.publisher.toMono
 import java.time.Duration
-import java.time.Duration.ofMillis
-
 
 
 @RunWith(SpringRunner::class)
@@ -36,7 +34,7 @@ class MemberRoutesConfigTest {
 
         webTestClient.get().uri("/api/v1/member/jeong")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().isOk
                 .expectBody(Member::class.java)
     }
 
@@ -52,7 +50,7 @@ class MemberRoutesConfigTest {
     @Test
     fun insertMember(){
 
-        var member: Member = Member(id = "jeong1", password = "12345", nickname = "정", address = "광주시", email = "jeong@naver.com", phoneNumber = "01012341234")
+        var member: Member = Member(id = "jeong1", password = "12345", nickname = "정", address = "광주시", email = "jeong@naver.com", phoneNumber = "01012341234", regDate = null)
 
         webTestClient.post().uri("/api/v1/member/jeong1")
                 .body(member.toMono())

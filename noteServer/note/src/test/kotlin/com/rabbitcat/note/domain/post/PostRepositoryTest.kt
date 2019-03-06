@@ -1,7 +1,6 @@
 package com.rabbitcat.note.domain.post
 
-import com.rabbitcat.note.repository.member.MemberRepository
-import com.rabbitcat.note.repository.post.PostRepositoryImpl
+import com.rabbitcat.note.repository.post.PostRepository
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Test
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class PostRepositoryTest {
 
     @Autowired
-   lateinit var postRepository : PostRepositoryImpl
+   lateinit var postRepository : PostRepository
 
     @After
     fun cleanUp(){
@@ -25,10 +24,8 @@ class PostRepositoryTest {
 
     @Test
     fun select_member_data_by_seq_id(){
-       val post = postRepository.getUserByLimitOneOrderByRegDateDescByQuerydsl(2);
-       println(post.toString())
-
-        assertEquals("jeong", post?.regId)
+        val post = postRepository.getUserByLimitOneOrderByRegDateDescByQuerydsl(2)
+        assertEquals("jeong", post?.member?.id)
     }
 
 }
