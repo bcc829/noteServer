@@ -1,4 +1,4 @@
-package com.rabbitcat.note.config.member
+package com.rabbitcat.note.controller.member
 
 import com.rabbitcat.note.domain.member.Member
 import org.junit.Before
@@ -16,7 +16,7 @@ import java.time.Duration
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberRoutesConfigTest {
+class MemberControllerTest {
 
     @Autowired
     lateinit var webTestClient : WebTestClient
@@ -43,7 +43,7 @@ class MemberRoutesConfigTest {
 
         webTestClient.get().uri("/api/v1/member")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().isOk
                 .expectBodyList(Member::class.java)
     }
 
@@ -55,7 +55,7 @@ class MemberRoutesConfigTest {
         webTestClient.post().uri("/api/v1/member/jeong1")
                 .body(member.toMono())
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange().expectStatus().isBadRequest()
+                .exchange().expectStatus().isBadRequest
                 .expectBody()
     }
 

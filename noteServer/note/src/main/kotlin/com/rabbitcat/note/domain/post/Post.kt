@@ -1,5 +1,6 @@
 package com.rabbitcat.note.domain.post
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.querydsl.core.annotations.QueryEntity
 import com.rabbitcat.note.domain.member.Member
 import org.hibernate.annotations.DynamicInsert
@@ -22,5 +23,6 @@ data class Post(
         var delYn : String? = null,
         @ManyToOne(targetEntity = Member::class, fetch = FetchType.LAZY)
         @JoinColumn(name="reg_id", referencedColumnName = "id")
+        @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
         val member: Member? = null
 )

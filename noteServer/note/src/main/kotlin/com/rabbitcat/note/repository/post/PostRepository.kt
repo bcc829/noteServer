@@ -6,6 +6,4 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 
-interface PostRepository : JpaRepository<Post, Number>, PostRepositoryCustom{
-
-}
+interface PostRepository : JpaRepository<Post, Number>, PostRepositoryCustom

@@ -17,15 +17,15 @@ class PostRepositoryTest {
     @Autowired
    lateinit var postRepository : PostRepository
 
-    @After
-    fun cleanUp(){
-
-    }
-
     @Test
-    fun select_member_data_by_seq_id(){
+    fun select_post_data_by_seq_id(){
         val post = postRepository.getUserByLimitOneOrderByRegDateDescByQuerydsl(2)
         assertEquals("jeong", post?.member?.id)
     }
 
+    @Test
+    fun select_post_data_by_reg_id(){
+        val post = postRepository.getUserByLimitOneOrderByRegDateDescByQuerydsl(2)
+        assertEquals("jeong", post?.member?.id)
+    }
 }

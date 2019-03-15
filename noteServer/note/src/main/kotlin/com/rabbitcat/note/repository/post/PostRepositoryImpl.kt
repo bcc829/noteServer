@@ -8,12 +8,11 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 class PostRepositoryImpl : PostRepositoryCustom, QuerydslRepositorySupport(PostRepositoryImpl::class.java) {
 
-    override fun getUserByLimitOneOrderByRegDateDescByQuerydsl(seqId: Int): Post? {
-
+    override fun getPostByUserIdLimitOneOrderByRegDateDesc(regId: String): Post? {
         val qPost = QPost.post
         val query = JPAQuery<Post>(entityManager)
 
-        return query.from(qPost).where(qPost.seqId.eq(seqId)).limit(1).orderBy(qPost.regDate.desc()).fetchOne()
+        return query.from(qPost).where(qPost.member.id.eq(regId)).limit(1).orderBy(qPost.regDate.desc()).fetchOne()
     }
 
 }
