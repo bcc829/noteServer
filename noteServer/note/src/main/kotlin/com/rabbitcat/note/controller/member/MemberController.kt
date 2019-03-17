@@ -1,12 +1,17 @@
 package com.rabbitcat.note.controller.member
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.rabbitcat.note.domain.idAndPassword.IdAndPassword
 import com.rabbitcat.note.domain.member.Member
 import com.rabbitcat.note.repository.member.MemberRepository
+import com.rabbitcat.note.service.member.MemberService
+import com.rabbitcat.note.service.member.MemberServiceImpl
+import org.hibernate.exception.SQLGrammarException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
 
 
@@ -15,94 +20,71 @@ import org.springframework.web.bind.annotation.*
 class MemberController {
 
     @Autowired
-    lateinit var memberRepository: MemberRepository
+    lateinit var memberService: MemberServiceImpl
 
     val logger = LoggerFactory.getLogger(javaClass)
 
-    @GetMapping("member/{id}")
-    fun getMemberInfoById(@PathVariable id : String): ResponseEntity<Any> {
+    @PostMapping("login")
+    fun memberSignUp(@RequestBody idAndPassword: IdAndPassword):ResponseEntity<Any>{
+        val token = memberService.loginMember(idAndPassword.id, idAndPassword.password)
+        return ResponseEntity(token, HttpStatus.OK)
+    }
 
-        logger.info(">>>>>>>>>>>> getMemberInfoById start!!!!!")
+    @GetMapping("member/{id}")
+    fun getMemberInfoById(@PathVariable id: String): ResponseEntity<Any> {
 
         var member: Member? = null
 
-        try {
-            member = memberRepository.findByIdEquals(id)
-        }catch (e:Exception){
-            logger.error(e.message)
-            return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Member is not exist"), HttpStatus.BAD_REQUEST)
-        }
-        logger.info(">>>>>>>>>>>> getMemberInfoById end!!!!!")
+        memberService.getMemberInfo(id)
 
-        return ResponseEntity(member, HttpStatus.OK)
+       return ResponseEntity(member, HttpStatus.OK)
     }
 
-    @GetMapping("member")
+    @GetMapping("member/all")
     fun getMemberInfoAll(): ResponseEntity<Any> {
 
-        logger.info(">>>>>>>>>>>> getMemberInfoAll start!!!!!")
-
-        var memberList : MutableList<Member>? = null
+        var memberList : List<Member>?
 
         try {
-            memberList = memberRepository.findAll()
+            memberList = memberService.getMemberAll()
         }catch (e: Exception){
             logger.error(e.message)
             return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Error in DB"), HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-        logger.info(">>>>>>>>>>>> getMemberInfoAll end!!!!!")
+        return when(memberList?.isEmpty()){
+            true -> ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Member is not exist"), HttpStatus.BAD_REQUEST)
 
-        return ResponseEntity(memberList, HttpStatus.OK)
+            false -> ResponseEntity(memberList, HttpStatus.OK)
+
+            else -> ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Member is not exist"), HttpStatus.BAD_REQUEST)
+        }
     }
 
-    @PostMapping("member/{id}")
-    fun insertMember(@PathVariable id : String, @RequestBody member: Member) : ResponseEntity<Any> {
+    @PostMapping("member/add")
+    fun insertMember(@RequestBody member: Member) : ResponseEntity<Any> {
 
-
-        var memberSave: Member = member
-
-        try{
-            memberRepository.findByIdEquals(id)
-            return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Member id is duplicated"), HttpStatus.BAD_REQUEST)
-        } catch (e: Exception){
-            try{
-                memberSave = memberRepository.save(member)
-            }catch (e: Exception){
-                logger.error(e.message)
-                return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Error in DB"), HttpStatus.INTERNAL_SERVER_ERROR)
-            }
-        }
+        val memberSave = memberService.addMember(member)
 
         return ResponseEntity(memberSave, HttpStatus.OK)
+
     }
 
     @PutMapping("member/{id}")
-    fun updateMember(@PathVariable id : String, @RequestBody member: Member) : ResponseEntity<Any> {
+    fun updateMember(@RequestHeader token: String, @RequestBody member: Member) : ResponseEntity<Any> {
 
-        try{
-            var existMember: Member
+        var updateMember: Member?
 
-            try{
-                existMember = memberRepository.findByIdEquals(id)
-            } catch (e: Exception){
-                return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "This member is not exist"), HttpStatus.BAD_REQUEST)
-            }
-
-            existMember.password = member.password
-            existMember.address = member.address
-            existMember.email = member.email
-            existMember.nickname = member.nickname
-            existMember.phoneNumber = member.phoneNumber
-
-            memberRepository.save(existMember)
-            return ResponseEntity(memberRepository.save(existMember), HttpStatus.OK)
-
+        try {
+            updateMember = memberService.updateMember(token, member)
         } catch (e: Exception){
-            logger.error(e.message)
             return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Error in DB"), HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
+        return when(updateMember){
+            null -> ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "This member is not exist"), HttpStatus.BAD_REQUEST)
+            else -> ResponseEntity(updateMember, HttpStatus.OK)
+        }
     }
 
 }

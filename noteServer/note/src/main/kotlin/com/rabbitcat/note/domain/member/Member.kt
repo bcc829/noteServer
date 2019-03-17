@@ -10,7 +10,7 @@ import javax.persistence.*
 @Table(name = "member", schema = "public")
 @DynamicInsert
 data class Member(
-        val seqId : Integer? = null,
+        val seqId : Int? = null,
         @Id
         val id: String,
         var password: String,
