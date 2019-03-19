@@ -93,7 +93,7 @@ class MemberServiceImpl: MemberService {
 
         return when(updateMember){
             null -> throw UnauthorizedException()
-            else -> memberRepository.save(member)
+            else -> memberRepository.save(updateMember)
         }
 
     }
