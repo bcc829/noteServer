@@ -30,12 +30,10 @@ class MemberController {
         return ResponseEntity(token, HttpStatus.OK)
     }
 
-    @GetMapping("member/{id}")
-    fun getMemberInfoById(@PathVariable id: String): ResponseEntity<Any> {
+    @GetMapping("member")
+    fun getMemberInfoById(@RequestHeader authorization: String): ResponseEntity<Any> {
 
-        var member: Member? = null
-
-        memberService.getMemberInfo(id)
+        var member = memberService.getMemberInfo(authorization)
 
        return ResponseEntity(member, HttpStatus.OK)
     }
@@ -61,7 +59,7 @@ class MemberController {
         }
     }
 
-    @PostMapping("member/add")
+    @PostMapping("join")
     fun insertMember(@RequestBody member: Member) : ResponseEntity<Any> {
 
         val memberSave = memberService.addMember(member)
@@ -70,21 +68,12 @@ class MemberController {
 
     }
 
-    @PutMapping("member/{id}")
-    fun updateMember(@RequestHeader token: String, @RequestBody member: Member) : ResponseEntity<Any> {
+    @PutMapping("member")
+    fun updateMember(@RequestHeader authorization: String, @RequestBody member: Member) : ResponseEntity<Any> {
 
-        var updateMember: Member?
+        var updateMember = memberService.updateMember(authorization, member)
 
-        try {
-            updateMember = memberService.updateMember(token, member)
-        } catch (e: Exception){
-            return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "Error in DB"), HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-
-        return when(updateMember){
-            null -> ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "This member is not exist"), HttpStatus.BAD_REQUEST)
-            else -> ResponseEntity(updateMember, HttpStatus.OK)
-        }
+        return ResponseEntity(updateMember, HttpStatus.OK)
     }
 
 }

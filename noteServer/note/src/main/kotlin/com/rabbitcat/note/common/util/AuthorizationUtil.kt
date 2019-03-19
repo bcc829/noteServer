@@ -1,6 +1,7 @@
 package com.rabbitcat.note.common.util
 
 import com.rabbitcat.note.exception.UnauthorizedException
+import com.rabbitcat.note.exception.UnsupportedAuthorizationException
 import org.springframework.util.Base64Utils
 
 object AuthorizationUtil {
@@ -14,7 +15,7 @@ object AuthorizationUtil {
             val decoded = String(Base64Utils.decodeFromString(credential))
             return decoded.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         }else{
-            throw UnauthorizedException()
+            throw UnsupportedAuthorizationException()
         }
     }
 }

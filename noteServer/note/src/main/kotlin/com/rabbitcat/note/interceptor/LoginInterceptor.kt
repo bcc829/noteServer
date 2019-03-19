@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 
 
 @Component
-class LoginInterCepter: HandlerInterceptorAdapter() {
+class LoginInterceptor: HandlerInterceptorAdapter() {
 
     @Autowired
     lateinit var memberService : MemberServiceImpl

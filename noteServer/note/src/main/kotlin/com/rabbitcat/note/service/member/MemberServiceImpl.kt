@@ -1,5 +1,6 @@
 package com.rabbitcat.note.service.member
 
+import com.rabbitcat.note.common.util.AuthorizationUtil
 import com.rabbitcat.note.domain.member.Member
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
@@ -33,16 +34,15 @@ class MemberServiceImpl: MemberService {
     }
 
     //회원 정보 조회
-    override fun getMemberInfo(id: String): Member? {
+    override fun getMemberInfo(token: String): Member? {
 
         var member : Member?
 
-        try {
-            member = memberRepository.findByIdEquals(id)
-        }catch (e: Exception){
-            logger.error(e.message)
-            throw e
-        }
+        val tokenId = AuthorizationUtil.getUserNameAndPasswordFromToken(token)[0]
+
+        member = memberRepository.findByIdEquals(tokenId)
+
+
         return when(member){
             null -> throw UnauthorizedException()
             else -> member
@@ -68,11 +68,7 @@ class MemberServiceImpl: MemberService {
         saveMember = memberRepository.findByIdEquals(member.id)
 
         if(saveMember == null){
-            try{
-                saveMember = memberRepository.save(member)
-            }catch (e : Exception){
-                throw e
-            }
+            saveMember = memberRepository.save(member)
             return saveMember
         }else{
             throw UserIdDuplicatedException()
@@ -82,21 +78,23 @@ class MemberServiceImpl: MemberService {
     //회원 정보 수정
     override fun updateMember(token: String, member: Member): Member? {
 
-        try{
-            var updateMember = memberRepository.findByIdEquals(member.id)
+        var updateMember: Member? = null
+        val tokenId = AuthorizationUtil.getUserNameAndPasswordFromToken(token)[0]
+
+        if(tokenId == member.id){
+            updateMember = memberRepository.findByIdEquals(member.id)
 
             updateMember?.address = member.address
             updateMember?.email = member.email
             updateMember?.nickname = member.nickname
             updateMember?.password = member.password
             updateMember?.phoneNumber = member.phoneNumber
-
-            return when(updateMember){
-                null -> throw UnauthorizedException()
-                else -> memberRepository.save(member)
-            }
-        }catch (e : Exception){
-            throw e
         }
+
+        return when(updateMember){
+            null -> throw UnauthorizedException()
+            else -> memberRepository.save(member)
+        }
+
     }
 }

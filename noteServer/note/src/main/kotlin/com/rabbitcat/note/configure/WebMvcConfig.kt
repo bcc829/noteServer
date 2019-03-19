@@ -1,6 +1,6 @@
 package com.rabbitcat.note.configure
 
-import com.rabbitcat.note.interceptor.LoginInterCepter
+import com.rabbitcat.note.interceptor.LoginInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -10,13 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebMvcConfig: WebMvcConfigurer {
 
     @Autowired
-    lateinit var loginInterCepter:LoginInterCepter
+    lateinit var loginInterceptor:LoginInterceptor
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(loginInterCepter)
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/api/**/member/all")
                 .excludePathPatterns("/api/**/login")
-                .excludePathPatterns("/ap/**/member/add")
+                .excludePathPatterns("/ap/**/join")
     }
 }
