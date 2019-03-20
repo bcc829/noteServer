@@ -1,6 +1,7 @@
 package com.rabbitcat.note.service.member
 
 import com.rabbitcat.note.common.util.AuthorizationUtil
+import com.rabbitcat.note.domain.idAndPassword.IdAndPassword
 import com.rabbitcat.note.domain.member.Member
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
@@ -76,7 +77,7 @@ class MemberServiceImpl: MemberService {
     }
 
     //회원 정보 수정
-    override fun updateMember(token: String, member: Member): Member? {
+    override fun updateMember(token: String, member: Member): String? {
 
         var updateMember: Member? = null
         val tokenId = AuthorizationUtil.getUserNameAndPasswordFromToken(token)[0]
@@ -93,7 +94,11 @@ class MemberServiceImpl: MemberService {
 
         return when(updateMember){
             null -> throw UnauthorizedException()
-            else -> memberRepository.save(updateMember)
+            else -> {
+                updateMember = memberRepository.save(updateMember)
+                val memberIdAndPassword = updateMember.id + ":" + updateMember.password
+                Base64Utils.encodeToString(memberIdAndPassword.toByteArray())
+            }
         }
 
     }

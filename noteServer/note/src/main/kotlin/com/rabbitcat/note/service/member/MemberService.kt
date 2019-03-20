@@ -7,5 +7,5 @@ interface MemberService {
     fun getMemberInfo(token: String): Member?
     fun getMemberAll():List<Member>?
     fun addMember(member: Member):Member?
-    fun updateMember(token:String ,member: Member):Member?
+    fun updateMember(token:String ,member: Member):String?
 }
