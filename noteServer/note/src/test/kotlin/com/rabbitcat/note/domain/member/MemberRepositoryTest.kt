@@ -3,6 +3,7 @@ package com.rabbitcat.note.domain.member
 import com.rabbitcat.note.repository.member.MemberRepository
 import junit.framework.TestCase.assertEquals
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,25 +18,12 @@ class MemberRepositoryTest {
     @Autowired
    lateinit var memberRepository : MemberRepository
 
-    @After
+    @Before
     fun cleanUp(){
+        var member = memberRepository.findByIdEquals("jeong345")
 
-    }
-
-    @Test
-    fun select_member_data_by_seq_id(){
-       var member = memberRepository.findBySeqIdEquals(3)
-       println(member.toString())
-
-        assertEquals("jeong", member?.id)
-    }
-
-    @Test
-    fun select_member_data_by_user_id(){
-        var member = memberRepository.findByIdEquals(id = "jeong")
-        println(member.toString());
-
-        assertEquals("jeong@email.com", member.email)
+        if(member != null)
+            memberRepository.delete(member)
     }
 
     @Test
@@ -54,7 +42,23 @@ class MemberRepositoryTest {
 
         var searchMember = memberRepository.findByIdEquals(id)
 
-        assertEquals("jeong3", searchMember.id)
+        assertEquals("jeong3", searchMember?.id)
 
+    }
+
+    @Test
+    fun select_member_data_by_user_id(){
+        var member = memberRepository.findByIdEquals(id = "jeong345")
+        println(member.toString());
+
+        assertEquals("test@email.com", member?.email)
+    }
+
+    @After
+    fun cleanMember(){
+        var member = memberRepository.findByIdEquals("jeong345")
+
+        if(member != null)
+            memberRepository.delete(member)
     }
 }

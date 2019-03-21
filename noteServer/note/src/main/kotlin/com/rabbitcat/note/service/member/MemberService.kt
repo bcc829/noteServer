@@ -8,4 +8,5 @@ interface MemberService {
     fun getMemberAll():List<Member>?
     fun addMember(member: Member):Member?
     fun updateMember(token:String ,member: Member):String?
+    fun deleteMeber(token: String)
 }

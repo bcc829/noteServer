@@ -76,4 +76,8 @@ class MemberController {
         return ResponseEntity(updateMember, HttpStatus.OK)
     }
 
+    @DeleteMapping("member")
+    fun deleteMember(@RequestHeader authorization: String): ResponseEntity<Any> {
+        return ResponseEntity(JsonNodeFactory.instance.objectNode().put("success_message", "Withdrawal Success"), HttpStatus.OK)
+    }
 }

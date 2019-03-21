@@ -18,4 +18,18 @@ object AuthorizationUtil {
             throw UnsupportedAuthorizationException()
         }
     }
+
+    fun getUserNameFromToken(token: String): String {
+        var tokenSplit = token.split(" ")
+
+        val credential =  tokenSplit[1]
+        val type = tokenSplit[0]
+
+        if("Basic".equals(type, true)){
+            val decoded = String(Base64Utils.decodeFromString(credential))
+            return decoded.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+        }else{
+            throw UnsupportedAuthorizationException()
+        }
+    }
 }

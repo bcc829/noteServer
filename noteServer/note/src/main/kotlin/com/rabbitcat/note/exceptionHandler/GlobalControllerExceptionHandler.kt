@@ -1,6 +1,7 @@
 package com.rabbitcat.note.exceptionHandler
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.rabbitcat.note.exception.InvalidArgumentException
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UnsupportedAuthorizationException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
@@ -33,8 +35,14 @@ class GlobalControllerExceptionHandler {
         return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", ex.message), HttpStatus.METHOD_NOT_ALLOWED)
     }
 
+    @ExceptionHandler(value = [(InvalidArgumentException::class), (MethodArgumentTypeMismatchException::class)])
+    fun handleInvalidArgumentException(ex: InvalidArgumentException): ResponseEntity<Any> {
+        logger.error("#######catch exception - {}", ex.message)
+        return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", "parameter is invalid"), HttpStatus.BAD_REQUEST)
+    }
+
     @ExceptionHandler(value = [(HttpRequestMethodNotSupportedException::class)])
-    fun handleMethodNotSupportedException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<Any>{
+    fun handleMethodNotSupportedException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<Any> {
         logger.error("#######catch exception - {}", ex.message)
         return ResponseEntity(JsonNodeFactory.instance.objectNode().put("errorMsg", ex.message), HttpStatus.METHOD_NOT_ALLOWED)
     }

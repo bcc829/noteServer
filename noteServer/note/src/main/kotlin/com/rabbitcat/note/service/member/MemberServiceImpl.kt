@@ -5,6 +5,7 @@ import com.rabbitcat.note.domain.idAndPassword.IdAndPassword
 import com.rabbitcat.note.domain.member.Member
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
+import com.rabbitcat.note.exception.UserNotExistException
 import com.rabbitcat.note.repository.member.MemberRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,7 +81,7 @@ class MemberServiceImpl: MemberService {
     override fun updateMember(token: String, member: Member): String? {
 
         var updateMember: Member? = null
-        val tokenId = AuthorizationUtil.getUserNameAndPasswordFromToken(token)[0]
+        val tokenId = AuthorizationUtil.getUserNameFromToken(token)
 
         if(tokenId == member.id){
             updateMember = memberRepository.findByIdEquals(member.id)
@@ -100,6 +101,16 @@ class MemberServiceImpl: MemberService {
                 Base64Utils.encodeToString(memberIdAndPassword.toByteArray())
             }
         }
+    }
 
+    override fun deleteMeber(token: String) {
+        val tokenId = AuthorizationUtil.getUserNameFromToken(token)
+
+        val member = memberRepository.findByIdEquals(tokenId)
+
+        when (member){
+            null -> throw UserNotExistException()
+            else -> memberRepository.delete(member)
+        }
     }
 }

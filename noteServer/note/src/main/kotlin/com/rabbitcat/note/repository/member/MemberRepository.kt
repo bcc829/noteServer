@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MemberRepository : JpaRepository<Member, Number> {
-    fun findBySeqIdEquals(seqId: Int): Member?
     fun findByIdEquals(id: String): Member?
     fun findByIdAndPassword(id:String, password:String): Member?
 }

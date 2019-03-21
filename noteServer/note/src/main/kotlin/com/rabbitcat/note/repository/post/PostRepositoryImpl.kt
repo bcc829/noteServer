@@ -6,8 +6,9 @@ import com.rabbitcat.note.common.enum.PostSearchType
 import com.rabbitcat.note.domain.post.Post
 import com.rabbitcat.note.domain.post.QPost
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
-import java.awt.print.Pageable
 
 
 class PostRepositoryImpl : PostRepositoryCustom, QuerydslRepositorySupport(PostRepositoryImpl::class.java) {
@@ -25,12 +26,25 @@ class PostRepositoryImpl : PostRepositoryCustom, QuerydslRepositorySupport(PostR
 
         when(postSearchType){
             PostSearchType.ALL -> {
-                query = from(qPost).fetchAll()
+                query = from(qPost).orderBy(qPost.regDate.desc()).fetchAll()
             }
-            PostSearchType.CONTENT ->{
-                query = from(qPost).where(qPost.content.likeIgnoreCase("%$value%"))
+            PostSearchType.CONTENT -> {
+                query = from(qPost).where(qPost.content.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+            }
+            PostSearchType.REG_ID -> {
+                query = from(qPost).where(qPost.regId.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+            }
+            PostSearchType.TITLE -> {
+                query = from(qPost).where(qPost.title.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+            }
+            PostSearchType.TITLE_OR_CONTENT -> {
+                query = from(qPost).where(qPost.title.likeIgnoreCase("%$value%").or(qPost.content.likeIgnoreCase("%$value%"))).orderBy(qPost.regDate.desc()).fetchAll()
             }
         }
+
+        val posts = querydsl?.applyPagination(pageable, query)?.fetch()
+
+        return PageImpl<Post>(posts!!, pageable, query.fetchCount())
     }
 
 }

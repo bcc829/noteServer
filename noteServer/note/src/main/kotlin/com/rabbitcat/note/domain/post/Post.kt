@@ -24,7 +24,5 @@ data class Post(
 //        val member: Member? = null,
         var regId : String,
         var readCount: Int? = null,
-        var recommendCount: Int? = null,
-        var notRecommendCount: Int? = null,
         var deleteFlag : Boolean? = null
 )

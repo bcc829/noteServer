@@ -64,8 +64,6 @@ CREATE TABLE public.post (
 	del_date timestamp NULL,
 	seq_id serial NOT NULL,
 	read_count int4 NULL DEFAULT 0,
-	recommend_count int4 NULL DEFAULT 0,
-	not_recommend_count int4 NULL DEFAULT 0,
 	delete_flag bool NULL DEFAULT false,
 	CONSTRAINT post_pk PRIMARY KEY (seq_id),
 	CONSTRAINT post_member_fk FOREIGN KEY (reg_id) REFERENCES member(id) ON UPDATE SET NULL ON DELETE SET NULL
