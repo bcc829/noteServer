@@ -26,19 +26,19 @@ class PostRepositoryImpl : PostRepositoryCustom, QuerydslRepositorySupport(PostR
 
         when(postSearchType){
             PostSearchType.ALL -> {
-                query = from(qPost).orderBy(qPost.regDate.desc()).fetchAll()
+                query = from(qPost).where(qPost.deleteFlag.eq(false)).orderBy(qPost.regDate.desc()).fetchAll()
             }
             PostSearchType.CONTENT -> {
-                query = from(qPost).where(qPost.content.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+                query = from(qPost).where(qPost.deleteFlag.eq(false).and(qPost.content.likeIgnoreCase("%$value%"))).orderBy(qPost.regDate.desc()).fetchAll()
             }
             PostSearchType.REG_ID -> {
-                query = from(qPost).where(qPost.regId.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+                query = from(qPost).where(qPost.deleteFlag.eq(false).and(qPost.regId.likeIgnoreCase("%$value%"))).orderBy(qPost.regDate.desc()).fetchAll()
             }
             PostSearchType.TITLE -> {
-                query = from(qPost).where(qPost.title.likeIgnoreCase("%$value%")).orderBy(qPost.regDate.desc()).fetchAll()
+                query = from(qPost).where(qPost.deleteFlag.eq(false).and(qPost.title.likeIgnoreCase("%$value%"))).orderBy(qPost.regDate.desc()).fetchAll()
             }
             PostSearchType.TITLE_OR_CONTENT -> {
-                query = from(qPost).where(qPost.title.likeIgnoreCase("%$value%").or(qPost.content.likeIgnoreCase("%$value%"))).orderBy(qPost.regDate.desc()).fetchAll()
+                query = from(qPost).where(qPost.deleteFlag.eq(false).and(qPost.title.likeIgnoreCase("%$value%").or(qPost.content.likeIgnoreCase("%$value%")))).orderBy(qPost.regDate.desc()).fetchAll()
             }
         }
 

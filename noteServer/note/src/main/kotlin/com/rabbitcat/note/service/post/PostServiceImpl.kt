@@ -4,6 +4,7 @@ import com.rabbitcat.note.common.enum.PostSearchType
 import com.rabbitcat.note.common.util.AuthorizationUtil
 import com.rabbitcat.note.domain.post.Post
 import com.rabbitcat.note.exception.UnauthorizedException
+import com.rabbitcat.note.repository.member.MemberRepository
 import com.rabbitcat.note.repository.post.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -16,6 +17,9 @@ class PostServiceImpl: PostService {
 
     @Autowired
     lateinit var postRepository: PostRepository
+
+    @Autowired
+    lateinit var memberRepository: MemberRepository
 
     override fun getUserNewlyPostLimitOne(token: String): Post? {
         val regId = AuthorizationUtil.getUserNameFromToken(token)
@@ -30,7 +34,9 @@ class PostServiceImpl: PostService {
     override fun addPost(token: String, post: Post): Post {
         val regId = AuthorizationUtil.getUserNameFromToken(token)
 
-        if(regId != post.regId)
+        val member = memberRepository.findByIdEquals(regId)
+
+        if(member?.nickname != post.regId)
             throw UnauthorizedException()
 
         return postRepository.save(post)
@@ -39,7 +45,9 @@ class PostServiceImpl: PostService {
     override fun updatePost(token: String, post: Post): Post {
         val regId = AuthorizationUtil.getUserNameFromToken(token)
 
-        if(regId != post.regId)
+        val member = memberRepository.findByIdEquals(regId)
+
+        if(member?.nickname != post.regId)
             throw UnauthorizedException()
 
         var updatePost = postRepository.findBySeqId(post.seqId!!)
@@ -63,8 +71,10 @@ class PostServiceImpl: PostService {
         val regId = AuthorizationUtil.getUserNameFromToken(token)
 
         var post = postRepository.findBySeqId(seqId)
+        
+        val member = memberRepository.findByIdEquals(regId)
 
-        if(regId != post.regId)
+        if(member?.nickname != post.regId)
             throw UnauthorizedException()
 
         post.deleteFlag = true

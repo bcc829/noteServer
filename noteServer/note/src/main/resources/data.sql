@@ -19,7 +19,7 @@
 
 
 
-CREATE SEQUENCE public.member_seq
+CREATE SEQUENCE public.member_seq_id_seq
 NO MINVALUE
 NO MAXVALUE;
 
@@ -47,6 +47,10 @@ ALTER TABLE public."member" ALTER COLUMN seq_id SET DEFAULT nextval('member_seq_
 ALTER TABLE public."member" ADD reg_date date NULL DEFAULT now() ;
 ALTER TABLE member ADD constraint unique_id unique (id)
 
+ALTER TABLE public."member" ALTER COLUMN nickname SET NOT NULL;
+ALTER TABLE public."member" ADD CONSTRAINT unique_nickname UNIQUE (nickname);
+
+
 -- DROP SEQUENCE public.post_seq_id_seq;
 
 CREATE SEQUENCE public.post_seq_id_seq
@@ -72,3 +76,26 @@ CREATE TABLE public.post (
 WITH (
 	OIDS=FALSE
 );
+ALTER TABLE public.post DROP CONSTRAINT post_member_fk;
+ALTER TABLE public.post ADD CONSTRAINT post_member_fk FOREIGN KEY (reg_id) REFERENCES public."member"(nickname) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE public.post_comment ALTER COLUMN post_seq_id DROP NOT NULL;
+
+
+CREATE TABLE public.post_comment (
+	seq_id serial NOT NULL,
+	post_seq_id int4 NULL,
+	reg_id varchar NOT NULL,
+	comment_seq_id int4 NULL,
+	reg_date timestamp NOT NULL DEFAULT now(),
+	upd_date timestamp NULL,
+	del_date timestamp NULL,
+	delete_flag bool NULL DEFAULT false,
+	content varchar NULL,
+	CONSTRAINT post_comment_pk PRIMARY KEY (seq_id),
+	CONSTRAINT post_comment_member_fk FOREIGN KEY (reg_id) REFERENCES member(nickname) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT post_comment_post_comment_fk FOREIGN KEY (seq_id) REFERENCES post_comment(seq_id),
+);
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_post_fk FOREIGN KEY (post_seq_id) REFERENCES public.post(seq_id);
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check CHECK (post_seq_id is not null or comment_seq_id is not null);
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_two CHECK (not(post_seq_id is not null and comment_seq_id is not null));
+ALTER TABLE public.post_comment ALTER COLUMN content SET NOT NULL;

@@ -1,6 +1,7 @@
 package com.rabbitcat.note.domain.post
 
 import com.querydsl.core.annotations.QueryEntity
+import com.rabbitcat.note.domain.postComment.PostComment
 import org.hibernate.annotations.DynamicInsert
 import java.util.*
 import javax.persistence.*
@@ -24,5 +25,8 @@ data class Post(
 //        val member: Member? = null,
         var regId : String,
         var readCount: Int? = null,
-        var deleteFlag : Boolean? = null
+        var deleteFlag : Boolean? = null,
+        @OneToMany(targetEntity = PostComment::class, fetch = FetchType.EAGER)
+        @JoinColumn(name = "post_seq_id")
+        val postCommentList: List<PostComment>? = null
 )

@@ -46,9 +46,9 @@ class PostRepositoryTest {
 
     @Test
     fun select_user_newly_post(){
-        val post = postRepository.getPostByUserIdLimitOneOrderByRegDateDesc("jeong")
+        val post = postRepository.getPostByUserIdLimitOneOrderByRegDateDesc("정준영")
 
-        assertEquals("jeong", post?.regId)
+        assertEquals("정준영", post?.regId)
     }
 
     @Test
