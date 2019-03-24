@@ -24,7 +24,7 @@ data class PostComment(
         var delDate: Date? = null,
         var deleteFlag: Boolean? = null,
         var content: String,
-        @OneToMany(targetEntity = PostComment::class, fetch = FetchType.EAGER)
+        @OneToMany(targetEntity = PostComment::class, fetch = FetchType.LAZY)
         @JoinColumn(name = "comment_seq_id")
         val postCommentList: List<PostComment>
 )

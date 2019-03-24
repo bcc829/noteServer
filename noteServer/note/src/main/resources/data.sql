@@ -78,7 +78,7 @@ WITH (
 );
 ALTER TABLE public.post DROP CONSTRAINT post_member_fk;
 ALTER TABLE public.post ADD CONSTRAINT post_member_fk FOREIGN KEY (reg_id) REFERENCES public."member"(nickname) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE public.post_comment ALTER COLUMN post_seq_id DROP NOT NULL;
+
 
 
 CREATE TABLE public.post_comment (
@@ -93,9 +93,11 @@ CREATE TABLE public.post_comment (
 	content varchar NULL,
 	CONSTRAINT post_comment_pk PRIMARY KEY (seq_id),
 	CONSTRAINT post_comment_member_fk FOREIGN KEY (reg_id) REFERENCES member(nickname) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT post_comment_post_comment_fk FOREIGN KEY (seq_id) REFERENCES post_comment(seq_id),
+	CONSTRAINT post_comment_post_comment_fk FOREIGN KEY (seq_id) REFERENCES post_comment(seq_id)
 );
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_post_fk FOREIGN KEY (post_seq_id) REFERENCES public.post(seq_id);
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check CHECK (post_seq_id is not null or comment_seq_id is not null);
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_two CHECK (not(post_seq_id is not null and comment_seq_id is not null));
 ALTER TABLE public.post_comment ALTER COLUMN content SET NOT NULL;
+ALTER TABLE public.post_comment ALTER COLUMN post_seq_id DROP NOT NULL;
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_three CHECK ((seq_id <> comment_seq_id));
