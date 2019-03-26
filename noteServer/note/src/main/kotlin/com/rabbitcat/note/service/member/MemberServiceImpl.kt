@@ -103,7 +103,7 @@ class MemberServiceImpl: MemberService {
         }
     }
 
-    override fun deleteMeber(token: String) {
+    override fun deleteMember(token: String) {
         val tokenId = AuthorizationUtil.getUserNameFromToken(token)
 
         val member = memberRepository.findByIdEquals(tokenId)

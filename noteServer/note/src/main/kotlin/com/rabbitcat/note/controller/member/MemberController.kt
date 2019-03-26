@@ -71,13 +71,14 @@ class MemberController {
     @PutMapping("member")
     fun updateMember(@RequestHeader authorization: String, @RequestBody member: Member) : ResponseEntity<Any> {
 
-        var updateMember = memberService.updateMember(authorization, member)
+        val updateMember = memberService.updateMember(authorization, member)
 
         return ResponseEntity(updateMember, HttpStatus.OK)
     }
 
     @DeleteMapping("member")
     fun deleteMember(@RequestHeader authorization: String): ResponseEntity<Any> {
+        memberService.deleteMember(authorization)
         return ResponseEntity(JsonNodeFactory.instance.objectNode().put("success_message", "Withdrawal Success"), HttpStatus.OK)
     }
 }

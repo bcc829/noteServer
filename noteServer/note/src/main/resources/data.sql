@@ -96,8 +96,9 @@ CREATE TABLE public.post_comment (
 	CONSTRAINT post_comment_post_comment_fk FOREIGN KEY (seq_id) REFERENCES post_comment(seq_id)
 );
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_post_fk FOREIGN KEY (post_seq_id) REFERENCES public.post(seq_id);
-ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check CHECK (post_seq_id is not null or comment_seq_id is not null);
-ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_two CHECK (not(post_seq_id is not null and comment_seq_id is not null));
 ALTER TABLE public.post_comment ALTER COLUMN content SET NOT NULL;
 ALTER TABLE public.post_comment ALTER COLUMN post_seq_id DROP NOT NULL;
-ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_three CHECK ((seq_id <> comment_seq_id));
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check CHECK ((seq_id <> comment_seq_id));
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_two CHECK (post_seq_id is not null or comment_seq_id is not null);
+ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_three CHECK (not(post_seq_id is not null and comment_seq_id is not null));
+

@@ -15,7 +15,7 @@ class PostCommentRepositoryImpl : PostCommentRepositoryCustom, QuerydslRepositor
         val qPostComment = QPostComment.postComment
         var query = JPAQuery<PostComment>(entityManager)
 
-        query = query.from(qPostComment).where(qPostComment.postSeqId.eq(postSeqId)).orderBy(qPostComment.regDate.desc()).fetchAll()
+        query = query.from(qPostComment).where(qPostComment.postSeqId.eq(postSeqId)).orderBy(qPostComment.regDate.asc()).fetchAll()
 
         val postComments = querydsl?.applyPagination(pageable, query)?.fetch()
 
@@ -27,7 +27,7 @@ class PostCommentRepositoryImpl : PostCommentRepositoryCustom, QuerydslRepositor
         val qPostComment = QPostComment.postComment
         var query = JPAQuery<PostComment>(entityManager)
 
-        query = query.from(qPostComment).where(qPostComment.regId.eq(regId)).orderBy(qPostComment.regDate.desc()).fetchAll()
+        query = query.from(qPostComment).where(qPostComment.regId.eq(regId)).orderBy(qPostComment.regDate.asc()).fetchAll()
 
         val postComments = querydsl?.applyPagination(pageable, query)?.fetch()
 
