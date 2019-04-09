@@ -1,8 +1,10 @@
 package com.rabbitcat.note.service.member
 
 import com.rabbitcat.note.common.util.AuthorizationUtil
+import com.rabbitcat.note.common.util.ValidationUtil
 import com.rabbitcat.note.domain.idAndPassword.IdAndPassword
 import com.rabbitcat.note.domain.member.Member
+import com.rabbitcat.note.exception.InvalidArgumentException
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
 import com.rabbitcat.note.exception.UserNotExistException
@@ -40,7 +42,7 @@ class MemberServiceImpl: MemberService {
 
         var member : Member?
 
-        val tokenId = AuthorizationUtil.getUserNameAndPasswordFromToken(token)[0]
+        val tokenId = AuthorizationUtil.getUserIdAndPasswordFromToken(token)[0]
 
         member = memberRepository.findByIdEquals(tokenId)
 
@@ -70,8 +72,12 @@ class MemberServiceImpl: MemberService {
         saveMember = memberRepository.findByIdEquals(member.id)
 
         if(saveMember == null){
-            saveMember = memberRepository.save(member)
-            return saveMember
+            if(ValidationUtil.isEmailFormat(member.id)){
+                saveMember = memberRepository.save(member)
+                return saveMember
+            }else {
+                throw InvalidArgumentException("${member.id} isn't email format")
+            }
         }else{
             throw UserIdDuplicatedException()
         }
@@ -81,7 +87,7 @@ class MemberServiceImpl: MemberService {
     override fun updateMember(token: String, member: Member): String? {
 
         var updateMember: Member? = null
-        val tokenId = AuthorizationUtil.getUserNameFromToken(token)
+        val tokenId = AuthorizationUtil.getUserIdFromToken(token)
 
         if(tokenId == member.id){
             updateMember = memberRepository.findByIdEquals(member.id)
@@ -104,7 +110,7 @@ class MemberServiceImpl: MemberService {
     }
 
     override fun deleteMember(token: String) {
-        val tokenId = AuthorizationUtil.getUserNameFromToken(token)
+        val tokenId = AuthorizationUtil.getUserIdFromToken(token)
 
         val member = memberRepository.findByIdEquals(tokenId)
 

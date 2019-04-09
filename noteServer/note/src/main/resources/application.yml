@@ -2,7 +2,7 @@ spring:
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/springdata
     username: keesun
     password: pass
     initialize: false
@@ -20,3 +20,12 @@ spring:
         default-page-size: 20
         max-page-size: 50
         one-indexed-parameters: false
+cloud:
+  aws:
+    credentials:
+      accessKey: YOUR_ACCESS_KEY
+      secretKey: YOUR_SECRET_KEY
+    s3:
+      bucket: YOUR_BUCKET
+    region:
+      static: YOUR_REGION

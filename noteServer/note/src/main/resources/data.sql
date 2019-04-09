@@ -102,3 +102,24 @@ ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check CHECK ((seq_id
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_two CHECK (post_seq_id is not null or comment_seq_id is not null);
 ALTER TABLE public.post_comment ADD CONSTRAINT post_comment_check_three CHECK (not(post_seq_id is not null and comment_seq_id is not null));
 
+CREATE TABLE public.post_attachment_files (
+	seq_id serial NOT NULL,
+	post_seq_id int NOT NULL,
+	root_directory varchar NOT NULL,
+	sub_directory varchar NOT NULL,
+	real_file_name varchar NOT NULL,
+	ext_file_name varchar NOT NULL,
+	delete_flag bool NULL,
+	reg_date timestamp NOT NULL,
+	upd_date timestamp NULL,
+	del_date timestamp NULL,
+	s3_url varchar NOT NULL,
+	CONSTRAINT post_attachment_files_pk PRIMARY KEY (seq_id),
+	CONSTRAINT post_attachment_files_post_fk FOREIGN KEY (post_seq_id) REFERENCES public.post(seq_id) ON DELETE SET NULL ON UPDATE SET NULL
+);
+ALTER TABLE public.post_attachment_files ADD reg_id varchar NOT NULL;
+ALTER TABLE public.post_attachment_files ADD CONSTRAINT post_attachment_files_member_fk FOREIGN KEY (reg_id) REFERENCES public."member"(nickname) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE public.post_attachment_files RENAME TO post_attachment_file;
+ALTER SEQUENCE public.post_attachment_files_seq_id_seq RENAME TO post_attachment_file_seq_id_seq;
+ALTER TABLE public.post_attachment_file ALTER COLUMN seq_id SET DEFAULT nextval('post_attachment_file_seq_id_seq'::regclass);
+ALTER TABLE public.post_attachment_file RENAME COLUMN s3_url TO file_path;

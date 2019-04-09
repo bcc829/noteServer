@@ -22,7 +22,7 @@ class MemberController {
     @Autowired
     lateinit var memberService: MemberServiceImpl
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @PostMapping("login")
     fun memberSignUp(@RequestBody idAndPassword: IdAndPassword):ResponseEntity<Any>{

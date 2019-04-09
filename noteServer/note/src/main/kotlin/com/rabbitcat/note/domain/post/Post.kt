@@ -1,8 +1,11 @@
 package com.rabbitcat.note.domain.post
 
 import com.querydsl.core.annotations.QueryEntity
+import com.rabbitcat.note.common.constant.Constant
 import com.rabbitcat.note.domain.postComment.PostComment
 import org.hibernate.annotations.DynamicInsert
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.util.*
 import javax.persistence.*
 
@@ -16,7 +19,7 @@ data class Post(
         val seqId : Int? = null,
         var title : String,
         var content : String,
-        var regDate : Date? = null,
+        var regDate : Date? = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate(),
         var updDate : Date? = null,
         var delDate : Date? = null,
 //        @ManyToOne(targetEntity = Member::class, fetch = FetchType.LAZY)

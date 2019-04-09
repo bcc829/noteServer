@@ -19,7 +19,7 @@ data class PostComment(
         var regId: String,
         @Column(name = "comment_seq_id")
         var commentSeqId: Int? = null,
-        val regDate: Date? = null,
+        val regDate: Date? = Date(),
         var updDate: Date? = null,
         var delDate: Date? = null,
         var deleteFlag: Boolean? = null,

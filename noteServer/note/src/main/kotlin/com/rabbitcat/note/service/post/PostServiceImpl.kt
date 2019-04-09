@@ -1,11 +1,14 @@
 package com.rabbitcat.note.service.post
 
+import com.rabbitcat.note.common.constant.Constant
 import com.rabbitcat.note.common.enum.PostSearchType
 import com.rabbitcat.note.common.util.AuthorizationUtil
 import com.rabbitcat.note.domain.post.Post
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.repository.member.MemberRepository
 import com.rabbitcat.note.repository.post.PostRepository
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,7 +25,7 @@ class PostServiceImpl: PostService {
     lateinit var memberRepository: MemberRepository
 
     override fun getUserNewlyPostLimitOne(token: String): Post? {
-        val regId = AuthorizationUtil.getUserNameFromToken(token)
+        val regId = AuthorizationUtil.getUserIdFromToken(token)
 
         return postRepository.getPostByUserIdLimitOneOrderByRegDateDesc(regId)
     }
@@ -32,7 +35,7 @@ class PostServiceImpl: PostService {
     }
 
     override fun addPost(token: String, post: Post): Post {
-        val regId = AuthorizationUtil.getUserNameFromToken(token)
+        val regId = AuthorizationUtil.getUserIdFromToken(token)
 
         val member = memberRepository.findByIdEquals(regId)
 
@@ -43,7 +46,7 @@ class PostServiceImpl: PostService {
     }
 
     override fun updatePost(token: String, post: Post): Post {
-        val regId = AuthorizationUtil.getUserNameFromToken(token)
+        val regId = AuthorizationUtil.getUserIdFromToken(token)
 
         val member = memberRepository.findByIdEquals(regId)
 
@@ -54,7 +57,7 @@ class PostServiceImpl: PostService {
 
         updatePost.title = post.title
         updatePost.content = post.content
-        updatePost.updDate = Date()
+        updatePost.updDate = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate()
 
         return postRepository.save(updatePost)
     }
@@ -68,7 +71,7 @@ class PostServiceImpl: PostService {
     }
 
     override fun deletePost(token: String, seqId: Int) {
-        val regId = AuthorizationUtil.getUserNameFromToken(token)
+        val regId = AuthorizationUtil.getUserIdFromToken(token)
 
         var post = postRepository.findBySeqId(seqId)
         

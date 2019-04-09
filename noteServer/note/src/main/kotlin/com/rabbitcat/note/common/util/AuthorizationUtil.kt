@@ -1,11 +1,10 @@
 package com.rabbitcat.note.common.util
 
-import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UnsupportedAuthorizationException
 import org.springframework.util.Base64Utils
 
 object AuthorizationUtil {
-    fun getUserNameAndPasswordFromToken(token: String): Array<String> {
+    fun getUserIdAndPasswordFromToken(token: String): Array<String> {
         var tokenSplit = token.split(" ")
 
         val credential =  tokenSplit[1]
@@ -19,7 +18,7 @@ object AuthorizationUtil {
         }
     }
 
-    fun getUserNameFromToken(token: String): String {
+    fun getUserIdFromToken(token: String): String {
         var tokenSplit = token.split(" ")
 
         val credential =  tokenSplit[1]

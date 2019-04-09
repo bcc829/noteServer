@@ -1,10 +1,13 @@
 package com.rabbitcat.note.service.postComment
 
+import com.rabbitcat.note.common.constant.Constant
 import com.rabbitcat.note.common.util.AuthorizationUtil
 import com.rabbitcat.note.domain.postComment.PostComment
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.repository.member.MemberRepository
 import com.rabbitcat.note.repository.postComment.PostCommentRepository
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,7 +28,7 @@ class PostCommentServiceImpl: PostCommentService {
     }
 
     override fun getUserPostCommentWithPaging(token: String, pageable: Pageable): Page<PostComment> {
-        val memberId = AuthorizationUtil.getUserNameFromToken(token)
+        val memberId = AuthorizationUtil.getUserIdFromToken(token)
 
         val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
 
@@ -33,7 +36,7 @@ class PostCommentServiceImpl: PostCommentService {
     }
 
     override fun addPostComment(token: String, postComment: PostComment): PostComment {
-        val memberId = AuthorizationUtil.getUserNameFromToken(token)
+        val memberId = AuthorizationUtil.getUserIdFromToken(token)
 
         val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
 
@@ -44,7 +47,7 @@ class PostCommentServiceImpl: PostCommentService {
     }
 
     override fun updatePostComment(token: String, postComment: PostComment): PostComment {
-        val memberId = AuthorizationUtil.getUserNameFromToken(token)
+        val memberId = AuthorizationUtil.getUserIdFromToken(token)
 
         val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
 
@@ -54,13 +57,13 @@ class PostCommentServiceImpl: PostCommentService {
         var updatePostComment = postCommentRepository.findBySeqId(postComment.seqId!!)
 
         updatePostComment.content = postComment.content
-        updatePostComment.updDate = Date()
+        updatePostComment.updDate = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate()
 
         return postCommentRepository.save(updatePostComment)
     }
 
     override fun deletePostComment(token: String, postComment: PostComment) {
-        val memberId = AuthorizationUtil.getUserNameFromToken(token)
+        val memberId = AuthorizationUtil.getUserIdFromToken(token)
 
         val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
 
@@ -70,7 +73,7 @@ class PostCommentServiceImpl: PostCommentService {
         var updatePostComment = postCommentRepository.findBySeqId(postComment.seqId!!)
 
         updatePostComment.deleteFlag = true
-        updatePostComment.delDate = Date()
+        updatePostComment.delDate = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate()
 
         postCommentRepository.save(updatePostComment)
     }

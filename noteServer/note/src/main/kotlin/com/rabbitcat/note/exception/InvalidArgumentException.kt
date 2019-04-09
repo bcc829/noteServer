@@ -1,6 +1,6 @@
 package com.rabbitcat.note.exception
 
-class InvalidArgumentException: RuntimeException() {
+class InvalidArgumentException(message: String ?= null): RuntimeException(message) {
     override val message: String?
-        get() = "parameter is invalid"
+        get() = if(super.message == null) "parameter is invalid" else super.message
 }

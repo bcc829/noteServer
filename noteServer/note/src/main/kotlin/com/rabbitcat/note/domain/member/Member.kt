@@ -1,7 +1,10 @@
 package com.rabbitcat.note.domain.member
 
 import com.querydsl.core.annotations.QueryEntity
+import com.rabbitcat.note.common.constant.Constant
 import org.hibernate.annotations.DynamicInsert
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.util.*
 import javax.persistence.*
 
@@ -18,4 +21,4 @@ data class Member(
         var address: String,
         var nickname: String,
         var email: String,
-        val regDate: Date? = null)
+        val regDate: Date? = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate())

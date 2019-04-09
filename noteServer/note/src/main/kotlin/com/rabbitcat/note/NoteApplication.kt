@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories
 @SpringBootApplication
-
 @EnableAspectJAutoProxy
 class NoteApplication
 

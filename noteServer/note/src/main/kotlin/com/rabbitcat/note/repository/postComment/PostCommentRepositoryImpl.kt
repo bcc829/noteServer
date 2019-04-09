@@ -6,7 +6,6 @@ import com.rabbitcat.note.domain.postComment.QPostComment
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.support.Querydsl
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 

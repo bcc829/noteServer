@@ -20,7 +20,7 @@ class LoginInterceptor: HandlerInterceptorAdapter() {
         try{
             val token = request.getHeader("Authorization")
 
-            val userIdAndPassword = AuthorizationUtil.getUserNameAndPasswordFromToken(token)
+            val userIdAndPassword = AuthorizationUtil.getUserIdAndPasswordFromToken(token)
             memberService.loginMember(userIdAndPassword[0], userIdAndPassword[1])
         } catch (e: Exception){
             throw UnauthorizedException()

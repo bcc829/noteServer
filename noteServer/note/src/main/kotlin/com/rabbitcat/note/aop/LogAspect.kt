@@ -15,7 +15,7 @@ class LogAspect {
     val logger = LoggerFactory.getLogger(javaClass)
 
     @Before("execution(* com.rabbitcat.note.controller.*.*.*(..))")
-    fun logging(pjp: JoinPoint){
+    fun controllerLogging(pjp: JoinPoint){
         logger.info("-------------------------------------")
 
         /* 전달되는 모든 파라미터들을 Object의 배열로 가져온다. */
@@ -31,17 +31,14 @@ class LogAspect {
         logger.info("4 target 객체:" + pjp.target.toString())
 
         /* Advice를 행하는 객체를 알아낼 때 사용 */
-        logger.info("5 Advice를 행하는 객체:" +pjp.`this`.toString())
+        //logger.info("5 Advice를 행하는 객체:" +pjp.`this`.toString())
 
         logger.info("-------------------------------------")
     }
 
     @Around("execution(* com.rabbitcat.note.controller.*.*.*(..))")
-    @Throws(Throwable::class)
-    fun timeLog(pjp: ProceedingJoinPoint): Any {
+    fun controllerTimeLog(pjp: ProceedingJoinPoint): Any {
         val startTime = System.currentTimeMillis()
-
-
 
         //실제 타겟을 실행하는 부분이다. 이 부분이 없으면 advice가 적용된 메소드가 동작을 안할것 같다.
         val result = pjp.proceed()  //proceed는 Exception 보다 상위 Throwable을 처리해야 한다.
@@ -51,6 +48,54 @@ class LogAspect {
         logger.info("==============================")
 
         //Around를 사용할 경우 반드시 Object를 리턴해야 한다.
+        return result
+    }
+
+    @Around("execution(* com.rabbitcat.note.service.fileStorage.FileStorageService.downloadFile(..))")
+    fun fileDownloadLog(pjp: ProceedingJoinPoint): Any{
+        val startTime = System.currentTimeMillis()
+
+        val result = pjp.proceed()
+        logger.info("==============================")
+        val endTime = System.currentTimeMillis()
+        logger.info(pjp.signature.name)
+        logger.info("파라미터: " + Arrays.toString(pjp.args))
+        logger.info("파일 다운로드 완료")
+        logger.info("파일 다운로드 시간 : " + (endTime - startTime) + "ms")  //target 메소드의 동작 시간을 출력한다.
+        logger.info("==============================")
+
+        return result
+    }
+
+    @Around("execution(* com.rabbitcat.note.service.fileStorage.FileStorageService.uploadFile(..))")
+    fun fileUploadLog(pjp: ProceedingJoinPoint): Any{
+        val startTime = System.currentTimeMillis()
+
+        val result = pjp.proceed()
+        logger.info("==============================")
+        val endTime = System.currentTimeMillis()
+        logger.info(pjp.signature.name)
+        logger.info("파라미터: " + Arrays.toString(pjp.args))
+        logger.info("파일 업로드 완료")
+        logger.info("업로드 시간 : " + (endTime - startTime) + "ms")  //target 메소드의 동작 시간을 출력한다.
+        logger.info("==============================")
+
+        return result
+    }
+
+    @Around("execution(* com.rabbitcat.note.service.fileStorage.FileStorageService.deleteFile(..))")
+    fun fileDeleteLog(pjp: ProceedingJoinPoint): Any{
+        val startTime = System.currentTimeMillis()
+
+        val result = pjp.proceed()
+        logger.info("==============================")
+        val endTime = System.currentTimeMillis()
+        logger.info(pjp.signature.name)
+        logger.info("파라미터: " + Arrays.toString(pjp.args))
+        logger.info("파일 삭제 완료")
+        logger.info("삭제 시간 : " + (endTime - startTime) + "ms")  //target 메소드의 동작 시간을 출력한다.
+        logger.info("==============================")
+
         return result
     }
 }

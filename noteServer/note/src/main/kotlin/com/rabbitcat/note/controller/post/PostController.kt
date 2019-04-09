@@ -3,7 +3,7 @@ package com.rabbitcat.note.controller.post
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.rabbitcat.note.common.enum.PostSearchType
 import com.rabbitcat.note.domain.post.Post
-import com.rabbitcat.note.service.post.PostServiceImpl
+import com.rabbitcat.note.service.post.PostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class PostController{
 
     @Autowired
-    lateinit var postService: PostServiceImpl
+    lateinit var postService: PostService
 
     @GetMapping("post/newly")
     fun getNewlyUserPostController(@RequestHeader authorization: String): ResponseEntity<Any> {
