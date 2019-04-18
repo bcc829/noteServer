@@ -14,9 +14,9 @@ class WebMvcConfig: WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/api/**/member/all")
-                .excludePathPatterns("/api/**/login")
-                .excludePathPatterns("/ap/**/join")
+                .addPathPatterns("/api")
+                .excludePathPatterns("/**/member/all")
+                .excludePathPatterns("/**/login")
+                .excludePathPatterns("/**/join")
     }
 }

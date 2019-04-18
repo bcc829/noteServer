@@ -1,7 +1,10 @@
 package com.rabbitcat.note.domain.postComment
 
 import com.querydsl.core.annotations.QueryEntity
+import com.rabbitcat.note.common.constant.Constant
 import org.hibernate.annotations.DynamicInsert
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.util.*
 import javax.persistence.*
 
@@ -19,7 +22,7 @@ data class PostComment(
         var regId: String,
         @Column(name = "comment_seq_id")
         var commentSeqId: Int? = null,
-        val regDate: Date? = Date(),
+        val regDate: Date? = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate(),
         var updDate: Date? = null,
         var delDate: Date? = null,
         var deleteFlag: Boolean? = null,
