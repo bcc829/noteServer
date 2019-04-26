@@ -20,9 +20,11 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.springframework.beans.factory.annotation.Value
 import java.util.*
+import javax.transaction.Transactional
 
 
 @Service
+@Transactional
 class PostAttachmentFileServicImpl: PostAttachmentFileService {
 
     @Autowired

@@ -14,8 +14,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class PostServiceImpl: PostService {
 
     @Autowired

@@ -13,16 +13,17 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.util.Base64Utils
-
+import javax.transaction.Transactional
 
 
 @Service
+@Transactional
 class MemberServiceImpl: MemberService {
 
     @Autowired
     lateinit var memberRepository: MemberRepository
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun loginMember(id: String, password: String): String{
         var member = memberRepository.findByIdAndPassword(id, password)
