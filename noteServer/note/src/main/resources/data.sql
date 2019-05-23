@@ -45,6 +45,7 @@ COMMENT ON COLUMN public."member".phone_number IS '회원 휴대폰 번호' ;
 
 ALTER TABLE public."member" ALTER COLUMN seq_id SET DEFAULT nextval('member_seq_id_seq') ;
 ALTER TABLE public."member" ADD reg_date date NULL DEFAULT now() ;
+ALTER TABLE public."member" ADD sns_principal vachar NULL ;
 ALTER TABLE member ADD constraint unique_id unique (id)
 
 ALTER TABLE public."member" ALTER COLUMN nickname SET NOT NULL;

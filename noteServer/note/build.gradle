@@ -68,6 +68,9 @@ dependencies {
     compile("org.springframework.cloud:spring-cloud-starter-aws:${springCloudVersion}")
     compile("commons-io:commons-io:${commonsIoVersion}")
     kapt ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+	// https://mvnrepository.com/artifact/joda-time/joda-time
+	compile group: 'joda-time', name: 'joda-time', version: '2.10.2'
+
 }
 
 kapt {
