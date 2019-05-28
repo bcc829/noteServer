@@ -21,5 +21,5 @@ data class Member(
         var address: String,
         var nickname: String,
         var email: String,
-        val regDate: Date? = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate(),
+        val regDate: Date? = DateTime.now(DateTimeZone.forID(Constant.TIME_ZONE)).toDate()
         )
