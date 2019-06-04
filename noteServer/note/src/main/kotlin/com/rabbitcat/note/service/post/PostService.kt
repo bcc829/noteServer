@@ -6,10 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface PostService {
-    fun getUserNewlyPostLimitOne(token: String): Post?
+    fun getUserNewlyPostLimitOne(id: String): Post?
     fun getPostWithPageableAndSearchType(type: PostSearchType = PostSearchType.ALL, value: String, pageable: Pageable): Page<Post>
-    fun addPost(token: String, post: Post): Post
-    fun updatePost(token: String, post: Post): Post
+    fun addPost(id: String, post: Post): Post
+    fun updatePost(id: String, post: Post): Post
     fun getPost(seqId: Int): Post
-    fun deletePost(token: String, seqId: Int)
+    fun deletePost(id: String, seqId: Int)
 }

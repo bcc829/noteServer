@@ -66,10 +66,9 @@ class PostAttachmentFileServicImpl: PostAttachmentFileService {
         return byteArray
     }
 
-    override fun addPostAttachmentFile(token: String, postId: Int, file:MultipartFile): PostAttachmentFile {
-        val userId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun addPostAttachmentFile(id: String, postId: Int, file:MultipartFile): PostAttachmentFile {
 
-        val member = memberRepository.findByIdEquals(userId)
+        val member = memberRepository.findByIdEquals(id)
 
         val post = postRepository.findBySeqId(postId)
 
@@ -95,11 +94,9 @@ class PostAttachmentFileServicImpl: PostAttachmentFileService {
 
     }
 
-    override fun deletePostAttachmentFile(token: String, fileSeqId: Int) {
+    override fun deletePostAttachmentFile(id: String, fileSeqId: Int) {
 
-        val userId = AuthorizationUtil.getUserIdFromToken(token)
-
-        val member = memberRepository.findByIdEquals(userId)
+        val member = memberRepository.findByIdEquals(id)
         var postAttachmentFile :PostAttachmentFile
 
         try {

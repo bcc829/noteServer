@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.net.URLConnection
+import java.security.Principal
 import javax.activation.MimetypesFileTypeMap
 
 @RestController
@@ -36,13 +37,13 @@ class postAttachmentFileController {
     }
 
     @PostMapping("/postAttachmentFile/{postId}")
-    fun addPostAttachmentFileController(@RequestHeader authorization: String, @PathVariable postId: Int, @RequestParam(value = "file", required = true) file: MultipartFile): ResponseEntity<Any> {
-        return ResponseEntity(postAttachmentFilesService.addPostAttachmentFile(authorization, postId, file), HttpStatus.OK)
+    fun addPostAttachmentFileController(principal: Principal, @PathVariable postId: Int, @RequestParam(value = "file", required = true) file: MultipartFile): ResponseEntity<Any> {
+        return ResponseEntity(postAttachmentFilesService.addPostAttachmentFile(principal.name.toString(), postId, file), HttpStatus.OK)
     }
 
     @DeleteMapping("/postAttachmentFile/{fileSeqId}")
-    fun deletePostAttachmentFileController(@RequestHeader authorization: String, @PathVariable fileSeqId: Int, @RequestParam(value = "file", required = true) file: MultipartFile): ResponseEntity<Any> {
-        return ResponseEntity(postAttachmentFilesService.deletePostAttachmentFile(authorization, fileSeqId), HttpStatus.OK)
+    fun deletePostAttachmentFileController(principal: Principal, @PathVariable fileSeqId: Int, @RequestParam(value = "file", required = true) file: MultipartFile): ResponseEntity<Any> {
+        return ResponseEntity(postAttachmentFilesService.deletePostAttachmentFile(principal.name.toString(), fileSeqId), HttpStatus.OK)
     }
 
 }

@@ -29,18 +29,16 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.getPostCommentWithPaging(postSeqId, pageable)
     }
 
-    override fun getUserPostCommentWithPaging(token: String, pageable: Pageable): Page<PostComment> {
-        val memberId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun getUserPostCommentWithPaging(id: String, pageable: Pageable): Page<PostComment> {
 
-        val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
+        val nickname = memberRepository.findByIdEquals(id)!!.nickname
 
         return postCommentRepository.getUserPostCommentWithPaging(nickname, pageable)
     }
 
-    override fun addPostComment(token: String, postComment: PostComment): PostComment {
-        val memberId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun addPostComment(id: String, postComment: PostComment): PostComment {
 
-        val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
+        val nickname = memberRepository.findByIdEquals(id)?.nickname
 
         if(nickname != postComment.regId)
             throw UnauthorizedException()
@@ -48,10 +46,9 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.save(postComment)
     }
 
-    override fun updatePostComment(token: String, postComment: PostComment): PostComment {
-        val memberId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun updatePostComment(id: String, postComment: PostComment): PostComment {
 
-        val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
+        val nickname = memberRepository.findByIdEquals(id)!!.nickname
 
         if(nickname != postComment.regId)
             throw UnauthorizedException()
@@ -64,10 +61,8 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.save(updatePostComment)
     }
 
-    override fun deletePostComment(token: String, postComment: PostComment) {
-        val memberId = AuthorizationUtil.getUserIdFromToken(token)
-
-        val nickname = memberRepository.findByIdEquals(memberId)?.nickname!!
+    override fun deletePostComment(id: String, postComment: PostComment) {
+        val nickname = memberRepository.findByIdEquals(id)?.nickname
 
         if(nickname != postComment.regId)
             throw UnauthorizedException()

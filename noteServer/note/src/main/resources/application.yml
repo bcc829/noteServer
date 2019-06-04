@@ -1,3 +1,14 @@
+server:
+  port: 8081
+
+security:
+  oauth2:
+    client:
+      client-id:
+      client-secret:
+    resource:
+      token-info-uri:
+
 spring:
   datasource:
     platform: postgres
@@ -20,12 +31,14 @@ spring:
         default-page-size: 20
         max-page-size: 50
         one-indexed-parameters: false
+
+
 cloud:
   aws:
     credentials:
-      accessKey: YOUR_ACCESS_KEY
-      secretKey: YOUR_SECRET_KEY
+      accessKey:
+      secretKey:
     s3:
-      bucket: YOUR_BUCKET
+      bucket: 
     region:
-      static: YOUR_REGION
+      static:

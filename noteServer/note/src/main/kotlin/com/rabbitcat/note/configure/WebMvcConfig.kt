@@ -12,11 +12,13 @@ class WebMvcConfig: WebMvcConfigurer {
     @Autowired
     lateinit var loginInterceptor:LoginInterceptor
 
-    override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/api")
-                .excludePathPatterns("/**/member/all")
-                .excludePathPatterns("/**/login")
-                .excludePathPatterns("/**/join")
-    }
+//    override fun addInterceptors(registry: InterceptorRegistry) {
+//        registry.addInterceptor(loginInterceptor)
+//                .addPathPatterns("/api")
+//                .excludePathPatterns("/**/member/all")
+//                .excludePathPatterns("/**/login")
+//                .excludePathPatterns("/**/join")
+//                .excludePathPatterns("/sso")
+//                .excludePathPatterns("/oauthCallback")
+//    }
 }

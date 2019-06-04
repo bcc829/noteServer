@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("api/v1/")
@@ -21,22 +22,22 @@ class PostCommentController {
     }
 
     @GetMapping("member/postComment")
-    fun getUserPostCommentController(@RequestHeader authorization: String, pageable: Pageable): ResponseEntity<Any> {
-        return ResponseEntity(postCommentService.getUserPostCommentWithPaging(authorization, pageable), HttpStatus.OK)
+    fun getUserPostCommentController(principal: Principal, pageable: Pageable): ResponseEntity<Any> {
+        return ResponseEntity(postCommentService.getUserPostCommentWithPaging(principal.name.toString(), pageable), HttpStatus.OK)
     }
 
     @PostMapping("postComment")
-    fun addPostCommentController(@RequestHeader authorization: String, @RequestBody postComment: PostComment): ResponseEntity<Any> {
-        return ResponseEntity(postCommentService.addPostComment(authorization, postComment), HttpStatus.OK)
+    fun addPostCommentController(principal: Principal, @RequestBody postComment: PostComment): ResponseEntity<Any> {
+        return ResponseEntity(postCommentService.addPostComment(principal.name.toString(), postComment), HttpStatus.OK)
     }
 
     @PutMapping("postComment")
-    fun updatePostCommentController(@RequestHeader authorization: String, @RequestBody postComment: PostComment): ResponseEntity<Any> {
-        return ResponseEntity(postCommentService.updatePostComment(authorization, postComment), HttpStatus.OK)
+    fun updatePostCommentController(principal: Principal, @RequestBody postComment: PostComment): ResponseEntity<Any> {
+        return ResponseEntity(postCommentService.updatePostComment(principal.name.toString(), postComment), HttpStatus.OK)
     }
 
     @DeleteMapping("postComment")
-    fun deletePostCommentController(@RequestHeader authorization: String, @RequestBody postComment: PostComment): ResponseEntity<Any> {
-        return ResponseEntity(postCommentService.deletePostComment(authorization, postComment), HttpStatus.OK)
+    fun deletePostCommentController(principal: Principal, @RequestBody postComment: PostComment): ResponseEntity<Any> {
+        return ResponseEntity(postCommentService.deletePostComment(principal.name.toString(), postComment), HttpStatus.OK)
     }
 }

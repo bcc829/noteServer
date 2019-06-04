@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("api/v1/")
@@ -18,8 +19,8 @@ class PostController{
     lateinit var postService: PostService
 
     @GetMapping("post/newly")
-    fun getNewlyUserPostController(@RequestHeader authorization: String): ResponseEntity<Any> {
-        return ResponseEntity(postService.getUserNewlyPostLimitOne(authorization), HttpStatus.OK)
+    fun getNewlyUserPostController(principal: Principal): ResponseEntity<Any> {
+        return ResponseEntity(postService.getUserNewlyPostLimitOne(principal.name.toString()), HttpStatus.OK)
     }
 
     @GetMapping("post/{seqId}")
@@ -28,18 +29,18 @@ class PostController{
     }
 
     @PostMapping("post")
-    fun addPostController(@RequestHeader authorization: String, @RequestBody post: Post): ResponseEntity<Any> {
-        return ResponseEntity(postService.addPost(authorization, post),  HttpStatus.OK)
+    fun addPostController(principal: Principal, @RequestBody post: Post): ResponseEntity<Any> {
+        return ResponseEntity(postService.addPost(principal.name.toString(), post),  HttpStatus.OK)
     }
 
     @PutMapping("post")
-    fun updatePostController(@RequestHeader authorization: String, @RequestBody post: Post): ResponseEntity<Any> {
-        return ResponseEntity(postService.updatePost(authorization, post), HttpStatus.OK)
+    fun updatePostController(principal: Principal, @RequestBody post: Post): ResponseEntity<Any> {
+        return ResponseEntity(postService.updatePost(principal.name.toString(), post), HttpStatus.OK)
     }
 
     @DeleteMapping("post/{seqId}")
-    fun deletePostController(@RequestHeader authorization: String, @PathVariable seqId: Int): ResponseEntity<Any> {
-        postService.deletePost(authorization, seqId)
+    fun deletePostController(principal: Principal, @PathVariable seqId: Int): ResponseEntity<Any> {
+        postService.deletePost(principal.name.toString(), seqId)
         return ResponseEntity(JsonNodeFactory.instance.objectNode().put("success_message", "Post delete success"), HttpStatus.OK)
     }
 

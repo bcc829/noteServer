@@ -39,14 +39,9 @@ class MemberServiceImpl: MemberService {
     }
 
     //회원 정보 조회
-    override fun getMemberInfo(token: String): Member? {
+    override fun getMemberInfo(id: String): Member? {
 
-        var member : Member?
-
-        val tokenId = AuthorizationUtil.getUserIdAndPasswordFromToken(token)[0]
-
-        member = memberRepository.findByIdEquals(tokenId)
-
+        var member  = memberRepository.findByIdEquals(id)
 
         return when(member){
             null -> throw UnauthorizedException()

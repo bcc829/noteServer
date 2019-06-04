@@ -26,20 +26,18 @@ class PostServiceImpl: PostService {
     @Autowired
     lateinit var memberRepository: MemberRepository
 
-    override fun getUserNewlyPostLimitOne(token: String): Post? {
-        val regId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun getUserNewlyPostLimitOne(id: String): Post? {
 
-        return postRepository.getPostByUserIdLimitOneOrderByRegDateDesc(regId)
+        return postRepository.getPostByUserIdLimitOneOrderByRegDateDesc(id)
     }
 
     override fun getPostWithPageableAndSearchType(type: PostSearchType, value: String, pageable: Pageable): Page<Post> {
         return postRepository.getPagingPostWithSearch(type, value, pageable)
     }
 
-    override fun addPost(token: String, post: Post): Post {
-        val regId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun addPost(id: String, post: Post): Post {
 
-        val member = memberRepository.findByIdEquals(regId)
+        val member = memberRepository.findByIdEquals(id)
 
         if(member?.nickname != post.regId)
             throw UnauthorizedException()
@@ -47,10 +45,9 @@ class PostServiceImpl: PostService {
         return postRepository.save(post)
     }
 
-    override fun updatePost(token: String, post: Post): Post {
-        val regId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun updatePost(id: String, post: Post): Post {
 
-        val member = memberRepository.findByIdEquals(regId)
+        val member = memberRepository.findByIdEquals(id)
 
         if(member?.nickname != post.regId)
             throw UnauthorizedException()
@@ -72,12 +69,11 @@ class PostServiceImpl: PostService {
         return postRepository.save(post)
     }
 
-    override fun deletePost(token: String, seqId: Int) {
-        val regId = AuthorizationUtil.getUserIdFromToken(token)
+    override fun deletePost(id: String, seqId: Int) {
 
         var post = postRepository.findBySeqId(seqId)
         
-        val member = memberRepository.findByIdEquals(regId)
+        val member = memberRepository.findByIdEquals(id)
 
         if(member?.nickname != post.regId)
             throw UnauthorizedException()

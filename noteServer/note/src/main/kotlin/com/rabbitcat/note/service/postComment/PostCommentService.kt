@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable
 
 interface PostCommentService {
     fun getPostCommentWithPaging(postSeqId: Int, pageable: Pageable): Page<PostComment>
-    fun getUserPostCommentWithPaging(token: String, pageable: Pageable): Page<PostComment>
-    fun addPostComment(token: String, postComment: PostComment): PostComment
-    fun updatePostComment(token: String, postComment: PostComment): PostComment
-    fun deletePostComment(token: String, postComment: PostComment)
+    fun getUserPostCommentWithPaging(id: String, pageable: Pageable): Page<PostComment>
+    fun addPostComment(id: String, postComment: PostComment): PostComment
+    fun updatePostComment(id: String, postComment: PostComment): PostComment
+    fun deletePostComment(id: String, postComment: PostComment)
 }
