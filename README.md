@@ -26,8 +26,8 @@
 ~	'token': 'token'~
 ~}~
 
--사용자 정보~
-Get : http://URL/api/v1/member
+~-사용자 정보-~
+~Get : http://URL/api/v1/member~
 
 ~헤더 Authorization에 Basic (로그인 후 받아온 토큰)을 넣어야 합니다. ex) Basic amVvbmczNDU6MzQ1Njc4~
 ~그렇지 않은 경우 비인가된 사용자로 인식하여 http 401에러가 나옵니다~
