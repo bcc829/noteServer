@@ -163,6 +163,7 @@ response
 Body:
 
 {
+
     "id": "jyjeong",
 	
     "nickname": "sadasd",
@@ -190,6 +191,7 @@ Header:
 Body: 
 
 {
+
 	"address" : "your_address",
 	
 	"email" : "your_email",
@@ -207,6 +209,7 @@ response
 Body:
 
 {
+
     "id": "jyjeong",
 	
     "nickname": "sadasd",
