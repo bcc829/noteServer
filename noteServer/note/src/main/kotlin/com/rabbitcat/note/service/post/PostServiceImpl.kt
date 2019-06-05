@@ -17,7 +17,6 @@ import java.util.*
 import javax.transaction.Transactional
 
 @Service
-@Transactional
 class PostServiceImpl: PostService {
 
     @Autowired
@@ -35,18 +34,18 @@ class PostServiceImpl: PostService {
         return postRepository.getPagingPostWithSearch(type, value, pageable)
     }
 
+    @Transactional
     override fun addPost(id: String, post: Post): Post {
 
-        val member = memberRepository.findByIdEquals(id)
+        val member = memberRepository.findByIdEquals(id)!!
 
-        if(member?.nickname != post.regId)
-            throw UnauthorizedException()
+        post.regId = member.nickname
 
         return postRepository.save(post)
     }
 
+    @Transactional
     override fun updatePost(id: String, post: Post): Post {
-
         val member = memberRepository.findByIdEquals(id)
 
         if(member?.nickname != post.regId)
@@ -61,6 +60,7 @@ class PostServiceImpl: PostService {
         return postRepository.save(updatePost)
     }
 
+    @Transactional
     override fun getPost(seqId: Int): Post {
         var post = postRepository.findBySeqId(seqId)
 
@@ -69,6 +69,7 @@ class PostServiceImpl: PostService {
         return postRepository.save(post)
     }
 
+    @Transactional
     override fun deletePost(id: String, seqId: Int) {
 
         var post = postRepository.findBySeqId(seqId)

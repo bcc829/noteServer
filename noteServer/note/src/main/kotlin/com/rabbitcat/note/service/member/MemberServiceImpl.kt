@@ -1,9 +1,11 @@
 package com.rabbitcat.note.service.member
 
+import com.rabbitcat.note.common.enum.UpdateUserInfoParameter
 import com.rabbitcat.note.common.util.AuthorizationUtil
 import com.rabbitcat.note.common.util.ValidationUtil
 import com.rabbitcat.note.domain.idAndPassword.IdAndPassword
 import com.rabbitcat.note.domain.member.Member
+import com.rabbitcat.note.domain.member.MemberOauth2UserInfo
 import com.rabbitcat.note.exception.InvalidArgumentException
 import com.rabbitcat.note.exception.UnauthorizedException
 import com.rabbitcat.note.exception.UserIdDuplicatedException
@@ -11,17 +13,20 @@ import com.rabbitcat.note.exception.UserNotExistException
 import com.rabbitcat.note.repository.member.MemberRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.util.Base64Utils
 import javax.transaction.Transactional
 
 
 @Service
-@Transactional
 class MemberServiceImpl: MemberService {
 
     @Autowired
     lateinit var memberRepository: MemberRepository
+
+    @Autowired
+    lateinit var passwordEncoder: PasswordEncoder
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -39,13 +44,13 @@ class MemberServiceImpl: MemberService {
     }
 
     //회원 정보 조회
-    override fun getMemberInfo(id: String): Member? {
+    override fun getMemberInfo(id: String): MemberOauth2UserInfo? {
 
         var member  = memberRepository.findByIdEquals(id)
 
         return when(member){
             null -> throw UnauthorizedException()
-            else -> member
+            else -> MemberOauth2UserInfo(id = member.id, nickname = member.nickname, email = member.email)
         }
     }
 
@@ -80,39 +85,38 @@ class MemberServiceImpl: MemberService {
     }
 
     //회원 정보 수정
-    override fun updateMember(token: String, member: Member): String? {
+    @Transactional
+    override fun updateMember(id: String, updateUserInfo: Map<String, String>): MemberOauth2UserInfo? {
 
-        var updateMember: Member? = null
-        val tokenId = AuthorizationUtil.getUserIdFromToken(token)
+        var updateMember = memberRepository.findByIdEquals(id)!!
 
-        if(tokenId == member.id){
-            updateMember = memberRepository.findByIdEquals(member.id)
-
-            updateMember?.address = member.address
-            updateMember?.email = member.email
-            updateMember?.nickname = member.nickname
-            updateMember?.password = member.password
-            updateMember?.phoneNumber = member.phoneNumber
-        }
-
-        return when(updateMember){
-            null -> throw UnauthorizedException()
-            else -> {
-                updateMember = memberRepository.save(updateMember)
-                val memberIdAndPassword = updateMember.id + ":" + updateMember.password
-                Base64Utils.encodeToString(memberIdAndPassword.toByteArray())
+        updateUserInfo.forEach { key, value  ->
+            run {
+                when (key.toLowerCase()) {
+                    UpdateUserInfoParameter.ADDRESS.name.toLowerCase() -> updateMember.address = value
+                    UpdateUserInfoParameter.EMAIL.name.toLowerCase() -> {
+                        if(ValidationUtil.isEmailFormat(email = value)){
+                            updateMember.email = value
+                        } else {
+                            throw InvalidArgumentException()
+                        }
+                    }
+                    UpdateUserInfoParameter.NICKNAME.name.toLowerCase() -> updateMember.nickname = value
+                    UpdateUserInfoParameter.PASSWORD.name.toLowerCase() -> updateMember.password = passwordEncoder.encode(value)
+                    UpdateUserInfoParameter.PHONE_NUMBER.name.toLowerCase() -> updateMember.phoneNumber = value
+                }
             }
         }
+
+        updateMember = memberRepository.save(updateMember)
+
+        return MemberOauth2UserInfo(id = updateMember.id, nickname = updateMember.nickname, email = updateMember.email)
     }
 
-    override fun deleteMember(token: String) {
-        val tokenId = AuthorizationUtil.getUserIdFromToken(token)
+    @Transactional
+    override fun deleteMember(id: String) {
+        val member = memberRepository.findByIdEquals(id)!!
 
-        val member = memberRepository.findByIdEquals(tokenId)
-
-        when (member){
-            null -> throw UserNotExistException()
-            else -> memberRepository.delete(member)
-        }
+        memberRepository.delete(member)
     }
 }

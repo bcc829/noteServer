@@ -1,6 +1,8 @@
 package com.rabbitcat.note.common.util
 
 import com.rabbitcat.note.exception.UnsupportedAuthorizationException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.encrypt.BytesEncryptor
 import org.springframework.util.Base64Utils
 
 object AuthorizationUtil {

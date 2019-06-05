@@ -26,7 +26,7 @@ data class Post(
 //        @JoinColumn(name="reg_id", referencedColumnName = "id")
 //        @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 //        val member: Member? = null,
-        var regId : String,
+        var regId : String?,
         var readCount: Int? = null,
         var deleteFlag : Boolean? = null
 //        @OneToMany(targetEntity = PostComment::class, fetch = FetchType.EAGER)

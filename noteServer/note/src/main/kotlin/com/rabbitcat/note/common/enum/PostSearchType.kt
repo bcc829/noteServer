@@ -5,5 +5,5 @@ enum class PostSearchType {
     TITLE,
     CONTENT,
     TITLE_OR_CONTENT,
-    ALL
+    ALL;
 }

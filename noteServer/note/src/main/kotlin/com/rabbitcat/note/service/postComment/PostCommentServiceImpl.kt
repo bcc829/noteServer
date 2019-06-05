@@ -16,7 +16,6 @@ import java.util.*
 import javax.transaction.Transactional
 
 @Service
-@Transactional
 class PostCommentServiceImpl: PostCommentService {
 
     @Autowired
@@ -36,6 +35,7 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.getUserPostCommentWithPaging(nickname, pageable)
     }
 
+    @Transactional
     override fun addPostComment(id: String, postComment: PostComment): PostComment {
 
         val nickname = memberRepository.findByIdEquals(id)?.nickname
@@ -46,6 +46,7 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.save(postComment)
     }
 
+    @Transactional
     override fun updatePostComment(id: String, postComment: PostComment): PostComment {
 
         val nickname = memberRepository.findByIdEquals(id)!!.nickname
@@ -61,6 +62,7 @@ class PostCommentServiceImpl: PostCommentService {
         return postCommentRepository.save(updatePostComment)
     }
 
+    @Transactional
     override fun deletePostComment(id: String, postComment: PostComment) {
         val nickname = memberRepository.findByIdEquals(id)?.nickname
 

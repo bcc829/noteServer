@@ -24,7 +24,6 @@ import javax.transaction.Transactional
 
 
 @Service
-@Transactional
 class PostAttachmentFileServicImpl: PostAttachmentFileService {
 
     @Autowired
@@ -66,6 +65,7 @@ class PostAttachmentFileServicImpl: PostAttachmentFileService {
         return byteArray
     }
 
+    @Transactional
     override fun addPostAttachmentFile(id: String, postId: Int, file:MultipartFile): PostAttachmentFile {
 
         val member = memberRepository.findByIdEquals(id)
@@ -94,6 +94,7 @@ class PostAttachmentFileServicImpl: PostAttachmentFileService {
 
     }
 
+    @Transactional
     override fun deletePostAttachmentFile(id: String, fileSeqId: Int) {
 
         val member = memberRepository.findByIdEquals(id)

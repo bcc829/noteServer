@@ -68,9 +68,9 @@ class MemberController {
 //    }
 
     @PutMapping("member")
-    fun updateMember(principal: Principal, @RequestBody member: Member) : ResponseEntity<Any> {
+    fun updateMember(principal: Principal, @RequestBody updateInfo: Map<String, String>) : ResponseEntity<Any> {
 
-        val updateMember = memberService.updateMember(principal.name.toString(), member)
+        val updateMember = memberService.updateMember(principal.name.toString(), updateInfo)
 
         return ResponseEntity(updateMember, HttpStatus.OK)
     }

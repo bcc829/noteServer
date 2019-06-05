@@ -51,6 +51,11 @@ ALTER TABLE public."member" ALTER COLUMN nickname SET NOT NULL;
 ALTER TABLE public."member" ADD CONSTRAINT unique_nickname UNIQUE (nickname);
 
 
+ALTER TABLE public."member" ALTER COLUMN email SET NOT NULL;
+ALTER TABLE public."member" ADD CONSTRAINT unique_email UNIQUE (email);
+
+
+
 -- DROP SEQUENCE public.post_seq_id_seq;
 
 CREATE SEQUENCE public.post_seq_id_seq
